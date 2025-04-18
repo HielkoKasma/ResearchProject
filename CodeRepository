@@ -49,11 +49,12 @@ head(pca)
 plot(pca$x[,1], pca$x[,2]) #PCA plot of RP_data
 head(RP_numeric)
 
+#Scree plot to visualize impact of each PC
 pca_var <- pca$sdev^2
 pca_var_percent <- round(pca_var/sum(pca_var)*100, 1)
 pca_var_percent 
 barplot(pca_var_percent, main="Scree Plot", xlab="Principal Component (1 --> 48)", 
-        ylab="Percent Variation", col = "gray50")
+        ylab="Percent Variation", col = "dodgerblue2")
 #PC 1 explains 29.1% of variation
 #PC 2 explains 7.4% of variation
 #PC1 and 2 explain the majority of the variation in the dataset
