@@ -1,0 +1,82 @@
+#Meeting 1 - analyzing metadata for the ATLANTIS study
+RP_meta <- metatable_ATL_repeated_subjects
+RP_meta
+RP_meta$meth_file_id == "208107860041_R01C01"
+table(RP_meta$gender)
+table(RP_meta$gender,RP_meta$asthma.status)
+table(RP_meta$gender, RP_meta$smoking.status)
+
+table(RP_meta$gender, RP_meta$age)
+
+table(RP_meta$gender, RP_meta$asthma.status, RP_meta$smoking.status)
+fac <- factor(RP_meta$RNA_seq_id)
+RP_meta$gender[,fac]
+c(RP_meta$gender)
+table(c(RP_meta$gender, RP_meta$age))
+RP_meta
+
+
+female <- c(13, 11, 2, 2, 11)
+male <- c(11, 9, 2, 2, 9)
+df <- data.frame(female, male)
+rownames(df) <- c("number of patients", "asthma", "healthy", "ex-smoker", "smoker")
+df
+table(RP_meta$gender, RP_meta$astma.status)
+
+#Meeting 2 - making a PCA plot
+#Importing the randomly selected 10% of the dataset
+RP_data <- RP_tenper_random_namesfix 
+#names of SubjectX_VisitX is assigned in csv file
+head(RP_data)
+RP_data[1,]
+
+
+#packages required
+install.packages("tidyverse")
+install.packages("ggplot2")
+library(tidyverse)
+library(ggplot2)
+
+#principle component analysis 
+#This code is used to find the PCs for data set RP_data
+
+RP_numeric <- RP_data %>%
+  select(where(is.numeric)) 
+head(RP_numeric)
+prcomp(t(RP_numeric), scale. = T)
+pca <- prcomp(t(RP_numeric), scale. = T) 
+head(pca)
+plot(pca$x[,1], pca$x[,2]) #PCA plot of RP_data
+head(RP_numeric)
+
+pca_var <- pca$sdev^2
+pca_var_percent <- round(pca_var/sum(pca_var)*100, 1)
+pca_var_percent 
+barplot(pca_var_percent, main="Scree Plot", xlab="Principal Component (1 --> 48)", 
+        ylab="Percent Variation", col = "gray50")
+#PC 1 explains 29.1% of variation
+#PC 2 explains 7.4% of variation
+#PC1 and 2 explain the majority of the variation in the dataset
+
+#pca_data contains the the values from RP_data, projected on PC1 and PC2 
+#if the values withing [] are changed, a different PC is selected
+#pca$x[,1] corresponds to PC1, pca$x[,48] corresponds to PC48
+pca_data <- data.frame(Sample=rownames(pca$x),
+                       X=pca$x[,1], 
+                       Y=pca$x[,2]) 
+print(pca_data)
+
+#PCA plot with labeled datapoints
+ggplot(data = pca_data, aes(x = X, y = Y, label = Sample)) +
+  geom_point() +
+  geom_text(size = 2) +
+  xlab(paste("PC1 - ", pca_var_percent[1], "%", sep = "")) +
+  ylab(paste("PC2 - ", pca_var_percent[2], "%", sep = "")) +
+  theme_bw() +
+  ggtitle("My PCA Graph")
+  
+#to view a labeled PCA plot for different PCs: change values in [] for ggplot and pca_data like described before
+
+
+
+
