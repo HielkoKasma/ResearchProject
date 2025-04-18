@@ -71,12 +71,12 @@ print(pca_data)
 #PCA plot with labeled data points
 ggplot(data = pca_data, aes(x = X, y = Y, label = Sample)) +
   geom_point() +
-  geom_text_repel(size = 2, max.overlaps = Inf, 
+  geom_text_repel(size = 2.5, max.overlaps = Inf, 
                   segment.color = "dodgerblue") +
   xlab(paste("PC1 - ", pca_var_percent[1], "%", sep = "")) +
   ylab(paste("PC2 - ", pca_var_percent[2], "%", sep = "")) +
   theme_bw() +
-  ggtitle("My PCA Graph")
+  ggtitle("PCA Plot")
   
 #to view a labeled PCA plot for different PCs: change values in [] for ggplot and pca_data like described before
 
