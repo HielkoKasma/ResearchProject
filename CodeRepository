@@ -23,7 +23,7 @@ rownames(df) <- c("number of patients", "asthma", "healthy", "ex-smoker", "smoke
 df
 table(RP_meta$gender, RP_meta$astma.status)
 
-#Meeting 2 - making a PCA plot
+#Meeting 2 - Making a PCA plot
 #Importing the randomly selected 10% of the dataset
 RP_data <- RP_tenper_random_namesfix 
 #names of SubjectX_VisitX is assigned in csv file
@@ -36,6 +36,7 @@ install.packages("tidyverse")
 install.packages("ggplot2")
 library(tidyverse)
 library(ggplot2)
+library(ggrepel)
 
 #principle component analysis 
 #This code is used to find the PCs for data set RP_data
@@ -67,16 +68,21 @@ pca_data <- data.frame(Sample=rownames(pca$x),
                        Y=pca$x[,2]) 
 print(pca_data)
 
-#PCA plot with labeled datapoints
+#PCA plot with labeled data points
 ggplot(data = pca_data, aes(x = X, y = Y, label = Sample)) +
   geom_point() +
-  geom_text(size = 2) +
+  geom_text_repel(size = 2, max.overlaps = Inf, 
+                  segment.color = "dodgerblue") +
   xlab(paste("PC1 - ", pca_var_percent[1], "%", sep = "")) +
   ylab(paste("PC2 - ", pca_var_percent[2], "%", sep = "")) +
   theme_bw() +
   ggtitle("My PCA Graph")
   
 #to view a labeled PCA plot for different PCs: change values in [] for ggplot and pca_data like described before
+
+
+
+
 
 
 
