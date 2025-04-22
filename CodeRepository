@@ -23,7 +23,8 @@ rownames(df) <- c("number of patients", "asthma", "healthy", "ex-smoker", "smoke
 df
 table(RP_meta$gender, RP_meta$astma.status)
 
-#Meeting 2 - Making a PCA plot
+
+#Meeting 2 - PCA plot - X and Y coordinates are stored in variable pca_data
 #Importing the randomly selected 10% of the dataset
 RP_data <- RP_tenper_random_namesfix 
 #names of SubjectX_VisitX is assigned in csv file
@@ -44,8 +45,14 @@ library(ggrepel)
 RP_numeric <- RP_data %>%
   select(where(is.numeric)) 
 head(RP_numeric)
-prcomp(t(RP_numeric), scale. = T)
-pca <- prcomp(t(RP_numeric), scale. = T) 
+
+metatable <- `metatable_ATL_repeated_subjects.(1)` %>%
+  mutate(pca_ids = colnames(RP_numeric))
+
+prcomp(t(RP_numeric), scale. = T) #repeated in next line without saving in variable
+pca <- prcomp(t(RP_numeric), scale. = T) #Scale = T --> data is measured in amount of standard deviations from mean
+#this is used when comparing two variables that are different, and differently scaled (eg hight vs age)
+#our data is already scaled, therefore we should run the code again with scale = F
 head(pca)
 plot(pca$x[,1], pca$x[,2]) #PCA plot of RP_data
 head(RP_numeric)
@@ -65,18 +72,27 @@ barplot(pca_var_percent, main="Scree Plot", xlab="Principal Component (1 --> 48)
 #pca$x[,1] corresponds to PC1, pca$x[,48] corresponds to PC48
 pca_data <- data.frame(Sample=rownames(pca$x),
                        X=pca$x[,1], 
-                       Y=pca$x[,2]) 
+                       Y=pca$x[,2]) %>%
+  mutate(group_id = str_remove(Sample, "_.*"))  %>%
+  left_join(metatable, by = c("Sample" = "pca_ids"))
 print(pca_data)
 
 #PCA plot with labeled data points
+library(ggrepel)
 ggplot(data = pca_data, aes(x = X, y = Y, label = Sample)) +
-  geom_point() +
+  geom_point(aes(color = group_id )) +
   geom_text_repel(size = 2.5, max.overlaps = Inf, 
-                  segment.color = "dodgerblue") +
+                  segment.color = "grey0") +
   xlab(paste("PC1 - ", pca_var_percent[1], "%", sep = "")) +
   ylab(paste("PC2 - ", pca_var_percent[2], "%", sep = "")) +
   theme_bw() +
   ggtitle("PCA Plot")
+
+#to view a labeled PCA plot for different PCs: change values in [] for ggplot and pca_data like described before
+
+aes(colour = gender) #put this in geom_point() to assign colors based on groups
+head(pca_data)
+
   
 #to view a labeled PCA plot for different PCs: change values in [] for ggplot and pca_data like described before
 
