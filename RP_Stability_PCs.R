@@ -1,3 +1,4 @@
+
 #code for making PC matrix
 head(pca_data)
 PC1_values <- pca_data$X
