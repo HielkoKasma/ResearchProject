@@ -92,3 +92,100 @@ results_df
 view(results_df)
 
 view(restls_df)
+
+View(metatable)
+library(dplyr)
+library(tidyr)
+install.packages("psych")
+library(psych)
+sample_names <- colnames(RP_data)
+sample_names
+sample_names <- sample_names[!sample_names %in% "X"]
+metatable$pca_ids <- sample_names
+all(metatable$pca_ids%in% colnames(RP_data))
+library(psych)
+install.packages("tidyverse")
+library(tidyverse)
+install.packages("tidyr")
+library(tidyr)
+RP_data[] <- lapply(RP_data, as.numeric)
+RP_data_ICC <- RP_data %>%
+  pivot_longer(cols = everything(), names_to = "SampleID_Visit", values_to = "Methylation_Value")
+View(RP_data_ICC)
+head(RP_data_ICC)
+metatable <- metatable %>%
+  rename(SampleID_Visit = pca_ids)
+merged_data <- left_join(RP_data_ICC, metatable, by = "SampleID_Visit")
+View(merged_data)
+library(tidyverse)
+
+library(tibble)
+RP_data <- RP_data %>%
+  rownames_to_column(var = "CpG_Site")
+View
+NEW_RP<-RP_tenper_random_namesfix
+View(RP_tenper_random_namesfix)
+View(NEW_RP)
+head(rownames(NEW_RP))
+head(NEW_RP[, 1:5])
+colnames(NEW_RP)[1] <- "CpG_Site" 
+if (!"CpG_Site" %in% colnames(NEW_RP)) {
+  RP_data_long <- NEW_RP %>%
+    rownames_to_column(var = "CpG_Site") %>%
+    pivot_longer(-CpG_Site, names_to = "SampleID_Visit", values_to = "Methylation_Value")
+} else {
+  RP_data_long <- NEW_RP %>%
+    pivot_longer(-CpG_Site, names_to = "SampleID_Visit", values_to = "Methylation_Value")
+}
+View(RP_data_long)
+merged_data <- left_join(RP_data_long, metatable, by = "SampleID_Visit")
+View(merged_data)
+head(merged_data)
+nrow(merged_data)
+sum(is.na(merged_data))
+data_wide <- merged_data %>%
+  select(CpG_Site, SampleID_Visit, Methylation_Value) %>%
+  pivot_wider(names_from = SampleID_Visit, values_from = Methylation_Value)
+View(data_wide)
+install.packages("lme4")
+library(lme4)
+library(psych)
+
+#PSYCH NOT WORKING
+
+# Transpose the numeric data: rows become subjects, columns become CpG sites
+icc_results <- psych::ICC(t(data_wide[,-1]))  # Remove CpG_Site column before transpose
+
+# View results
+View(icc_results)
+print(icc_results$results)
+colnames(data_wide)
+data_wide <- data_wide %>%
+  select(-CpG_Site)
+icc_results <- psych::ICC(t(data_wide), model = "twoway", type = "consistency", unit = "average")
+
+library(irr)
+
+# Assuming your data is in long format where rows are methylation sites and columns are sample_visit
+icc_data <- data_wide  # Replace with your data
+
+# Calculate ICC using the 'icc()' function from 'irr' package
+icc_results <- icc(icc_data, model = "twoway", type = "consistency", unit = "average")
+
+# Print the results
+print(icc_results)
+
+
+#TRYING IRR
+
+install.packages("irr")
+library(irr)
+
+# Assuming your data is in long format where rows are methylation sites and columns are sample_visit
+icc_data <- data_wide  # Replace with your data
+
+# Calculate ICC using the 'icc()' function from 'irr' package
+icc_results <- icc(icc_data, model = "twoway", type = "consistency", unit = "average")
+
+# Print the results
+print(icc_results)
