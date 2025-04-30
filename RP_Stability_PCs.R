@@ -207,6 +207,19 @@ icc_results <- icc(icc_data, model = "twoway", type = "consistency", unit = "ave
 # Print the results
 print(icc_results)
 
-CpGrand<-NEW_RP[9110,]
-head(CpGrand)
-View()
+CpG_rand<-NEW_RP[9110,]
+head(CpG_rand)
+View(CpG_rand)
+CpG_rand_clean <- CpG_rand[,-1]
+
+library(tidyverse)
+long_df <- CpG_rand_clean %>%
+  pivot_longer(cols = everything(), names_to = "Sample", values_to = "Value") %>%
+  separate(Sample, into = c("SampleID", "Visit"), sep = "_") %>%
+  mutate(
+    SampleID = factor(SampleID, levels = paste0("S", 1:24)),
+    Visit = factor(Visit, levels = c("V1", "V2"))
+  ) %>%
+  arrange(SampleID) %>%
+  pivot_wider(names_from = Visit, values_from = Value) %>%
+  select(V1, V2)
