@@ -93,11 +93,14 @@ view(results_df)
 
 view(restls_df)
 
-View(metatable)
+#calculating ICC: 
+
 library(dplyr)
 library(tidyr)
 install.packages("psych")
 library(psych)
+
+#needed to have the same sample names in the metatable as int he methylation data (s1_v1), etc... this took me ages. some of the code is redundant
 sample_names <- colnames(RP_data)
 sample_names
 sample_names <- sample_names[!sample_names %in% "X"]
@@ -115,20 +118,28 @@ View(RP_data_ICC)
 head(RP_data_ICC)
 metatable <- metatable %>%
   rename(SampleID_Visit = pca_ids)
+
+#i managed to make the merged data table: 
+
 merged_data <- left_join(RP_data_ICC, metatable, by = "SampleID_Visit")
 View(merged_data)
 library(tidyverse)
-
 library(tibble)
 RP_data <- RP_data %>%
   rownames_to_column(var = "CpG_Site")
 View
+
+#made a copy of the methylation data with CPG sites as a column title instead of: 
+
 NEW_RP<-RP_tenper_random_namesfix
 View(RP_tenper_random_namesfix)
 View(NEW_RP)
 head(rownames(NEW_RP))
 head(NEW_RP[, 1:5])
 colnames(NEW_RP)[1] <- "CpG_Site" 
+
+#i then chnaged the data into longform for the methylation 
+
 if (!"CpG_Site" %in% colnames(NEW_RP)) {
   RP_data_long <- NEW_RP %>%
     rownames_to_column(var = "CpG_Site") %>%
@@ -137,12 +148,18 @@ if (!"CpG_Site" %in% colnames(NEW_RP)) {
   RP_data_long <- NEW_RP %>%
     pivot_longer(-CpG_Site, names_to = "SampleID_Visit", values_to = "Methylation_Value")
 }
+
+# merged data: 
+  
 View(RP_data_long)
 merged_data <- left_join(RP_data_long, metatable, by = "SampleID_Visit")
 View(merged_data)
 head(merged_data)
 nrow(merged_data)
 sum(is.na(merged_data))
+
+#made it wide again:
+
 data_wide <- merged_data %>%
   select(CpG_Site, SampleID_Visit, Methylation_Value) %>%
   pivot_wider(names_from = SampleID_Visit, values_from = Methylation_Value)
