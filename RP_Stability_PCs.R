@@ -223,3 +223,13 @@ long_df <- CpG_rand_clean %>%
   arrange(SampleID) %>%
   pivot_wider(names_from = Visit, values_from = Value) %>%
   select(V1, V2)
+
+View(long_df)
+
+library(psych)
+icc_result_rand<-ICC(long_df)
+print(icc_result_rand)
+
+library(irr)
+icc_result_rand_irr<-icc(long_df, model = "twoway", type = "consistency", unit = "single")
+print(icc_result_rand_irr)
