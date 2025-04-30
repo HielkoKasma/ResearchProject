@@ -206,3 +206,7 @@ icc_results <- icc(icc_data, model = "twoway", type = "consistency", unit = "ave
 
 # Print the results
 print(icc_results)
+
+CpGrand<-NEW_RP[9110,]
+head(CpGrand)
+View()
