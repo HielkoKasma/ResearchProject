@@ -12,24 +12,18 @@ view(meta_clean)
 meta_clean1 <- meta_clean[,-8]
 view(meta_clean1)
 
+pca <- prcomp(t(RP_numeric), scale. = F)
+pca_data <- data.frame(Sample=rownames(pca$x),
+                       X=pca$x[,1], 
+                       Y=pca$x[,2]) %>%
+  mutate(group_id = str_remove(Sample, "_.*"))  %>%
+  left_join(metatable, by = c("Sample" = "pca_ids"))
+view(pca_data)
 
-cor.MOFA <- psych::corr.test(factor_scores %>%
-                               tibble::column_to_rownames('sample'),
-                             master.table.numeric %>%
-                               tibble::column_to_rownames('sample'),
-                             method = "spearman",
-                             adjust = "BH",
-                             minlength = 2)
-
-p_val_adj <- cor.MOFA$p.adj
-cor_coef <- cor.MOFA$r
-
-#plot p val
-symmertic_breaks <- seq(from=0, to = 0.06, length.out = 256)
-color=colorRampPalette(c('red4', 'white', 'blue4'))(256)
-heatmap_p_val <- pheatmap::pheatmap(p_val_adj, main = "adjusted p-value",
-                                    cluster_rows = T,
-                                    cluster_cols = T,
-                                    color = color,
-                                    #display_numbers = cor_coef,
-                                    breaks = symmertic_breaks)
+df_PCAvalues <- data.frame(pca_data$X) 
+df_PCAvalues$PC2 <- pca_data$Y
+df_PCAvalues
+colnames(df_PCAvalues) <- c("PC1", "PC2")
+df_PCAvalues
+rownames(df_PCAvalues) <- pca_data$Sample
+df_PCAvalues
