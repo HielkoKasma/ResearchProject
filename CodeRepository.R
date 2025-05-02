@@ -196,12 +196,35 @@ view(results_df)
 
 
 ## Extract cpg loadings from PC
+library(tidyverse)
+
+#set names of original dataset as rownames
+RP_tenper_random_namesfix <- RP_tenper_random_namesfix %>%
+  column_to_rownames("X")
+view(RP_tenper_random_namesfix)
+
+#find out if the cpg sites in RP_tenper... are in the same order as the PCA
+#This code proves that, since RP_numeric was used for the PCA
+identical(RP_tenper_random_namesfix$S1_V2, RP_numeric$S1_V2)
+
+
+
 rotation_table <- pca$rotation
+nrow(rotation_table) #rotation_table = PC values for each cpg site per PC
+rownames(rotation_table) <- rownames(RP_tenper_random_namesfix)
+view(rotation_table) #now, the PVA values correspond to the name of the correct cpg site
+
+#making a dataframe for PC values per CpG site in descending order for PC1
 pc1_rotation_table <- rotation_table %>%
   as.data.frame() %>%
   dplyr::select(PC1) %>%
+  mutate(PC1 = abs(PC1)) %>%
   arrange(desc(PC1))
-  
+any(pc1_rotation_table$PC1 < 0)
+view(pc1_rotation_table)
 
+RP_tenper_random_namesfix <- RP_tenper_random_namesfix %>%
+  column_to_rownames("X")
+view(RP_tenper_random_namesfix)
 
 
