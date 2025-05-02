@@ -43,16 +43,20 @@ library(ggrepel)
 #This code is used to find the PCs for data set RP_data
 
 RP_numeric <- RP_data %>%
-  select(where(is.numeric)) 
+  tibble::column_to_rownames("X")
 head(RP_numeric)
 
 metatable <- `metatable_ATL_repeated_subjects.(1)` %>%
   mutate(pca_ids = colnames(RP_numeric))
 
+View(metatable)
 prcomp(t(RP_numeric), scale. = T) #repeated in next line without saving in variable
 pca <- prcomp(t(RP_numeric), scale. = T) #Scale = T --> data is measured in amount of standard deviations from mean
 #this is used when comparing two variables that are different, and differently scaled (eg hight vs age)
 #our data is already scaled, therefore we should run the code again with scale = F
+
+# run with scale = F
+pca <- prcomp(t(RP_numeric), scale. = F)
 head(pca)
 plot(pca$x[,1], pca$x[,2]) #PCA plot of RP_data
 head(RP_numeric)
@@ -191,9 +195,13 @@ results_df
 view(results_df)
 
 
-
-
-
+## Extract cpg loadings from PC
+rotation_table <- pca$rotation
+pc1_rotation_table <- rotation_table %>%
+  as.data.frame() %>%
+  dplyr::select(PC1) %>%
+  arrange(desc(PC1))
+  
 
 
 
