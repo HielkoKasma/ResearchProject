@@ -62,3 +62,17 @@ heatmap_p_val <- pheatmap::pheatmap(p_val_adj, main = "adjusted p-value",
                                     #display_numbers = cor_coef,
                                     breaks = symmertic_breaks,
                                     fontsize_col = 6)
+meta_clean1 <- meta_clean1 %>%
+  mutate(
+    ex_smoker = ifelse(smoking.status == "Ex.smoker", 1, 0),
+    non_smoker = ifelse(smoking.status == "Non.smoker", 1, 0),
+    asthma = ifelse(asthma.status == "A", 1, 0),
+    healthy = ifelse(asthma.status == "H", 1, 0),
+    female = ifelse(gender == "female", 1, 0),
+    male = ifelse(gender == "male", 1, 0)
+  )
+view(meta_clean1)
+meta_clean1 <- meta_clean1[,-9]
+view(meta_clean1
+View(meta_clean1). 
+#aaa
