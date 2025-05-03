@@ -212,7 +212,7 @@ identical(RP_tenper_random_namesfix$S1_V2, RP_numeric$S1_V2)
 rotation_table <- pca$rotation
 nrow(rotation_table) #rotation_table = PC values for each cpg site per PC
 rownames(rotation_table) <- rownames(RP_tenper_random_namesfix)
-view(rotation_table) #now, the PVA values correspond to the name of the correct cpg site
+view(rotation_table) #now, the CpG site corresponding to each PCA value is displayed in rotation_table
 
 #making a dataframe for PC values per CpG site in descending order for PC1
 pc1_rotation_table <- rotation_table %>%
@@ -227,4 +227,8 @@ RP_tenper_random_namesfix <- RP_tenper_random_namesfix %>%
   column_to_rownames("X")
 view(RP_tenper_random_namesfix)
 
-
+pc2_rotation_table <- rotation_table %>%
+  as.data.frame() %>%
+  dplyr::select(PC2) %>%
+  mutate(PC1 = abs(PC2)) %>%
+  arrange(desc(PC2))
