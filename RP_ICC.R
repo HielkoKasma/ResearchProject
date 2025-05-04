@@ -1,5 +1,8 @@
 ## Extract cpg loadings from PC
 library(tidyverse)
+library(dplyr)
+library(tidyr)
+library(psych)
 
 #set names of original dataset as rownames
 RP_tenper_random_namesfix <- RP_tenper_random_namesfix %>%
@@ -23,6 +26,14 @@ pc1_rotation_table <- rotation_table %>%
   arrange(desc(PC1))
 any(pc1_rotation_table$PC1 < 0)
 view(pc1_rotation_table)
+top100_pc1_cpgs <- rownames(pc1_rotation_table)[1:100]
+head(top100_pc1_cpgs)
+matching_pc1 <- intersect(top100_pc1_cpgs, rownames(RP_tenper_random_namesfix))
+View(matching_pc1)
+beta_pc1 <- RP_tenper_random_namesfix[matching_pc1, ]
+View(beta_pc1)
+beta_pc1_t <- t(beta_pc1)
+View(beta_pc1_t)
 
 pc2_rotation_table <- rotation_table %>%
   as.data.frame() %>%
@@ -30,6 +41,14 @@ pc2_rotation_table <- rotation_table %>%
   mutate(PC2 = abs(PC2)) %>%
   arrange(desc(PC2))
 view(pc2_rotation_table)
+top100_pc2_cpgs <- rownames(pc2_rotation_table)[1:100]
+head(top100_pc2_cpgs)
+matching_pc2 <- intersect(top100_pc2_cpgs, rownames(RP_tenper_random_namesfix))
+View(matching_pc2)
+beta_pc2 <- RP_tenper_random_namesfix[matching_pc2, ]
+View(beta_pc2)
+beta_pc2_t <- t(beta_pc2)
+View(beta_pc2_t)
 
 pc3_rotation_table <- rotation_table %>%
   as.data.frame() %>%
@@ -37,6 +56,14 @@ pc3_rotation_table <- rotation_table %>%
   mutate(PC3 = abs(PC3)) %>%
   arrange(desc(PC3))
 view(pc3_rotation_table)
+top100_pc3_cpgs <- rownames(pc3_rotation_table)[1:100]
+head(top100_pc3_cpgs)
+matching_pc3 <- intersect(top100_pc3_cpgs, rownames(RP_tenper_random_namesfix))
+View(matching_pc3)
+beta_pc3 <- RP_tenper_random_namesfix[matching_pc3, ]
+View(beta_pc3)
+beta_pc3_t <- t(beta_pc3)
+View(beta_pc3_t)
 
 pc4_rotation_table <- rotation_table %>%
   as.data.frame() %>%
@@ -44,6 +71,14 @@ pc4_rotation_table <- rotation_table %>%
   mutate(PC4 = abs(PC4)) %>%
   arrange(desc(PC4))
 view(pc4_rotation_table)
+top100_pc4_cpgs <- rownames(pc4_rotation_table)[1:100]
+head(top100_pc4_cpgs)
+matching_pc4 <- intersect(top100_pc4_cpgs, rownames(RP_tenper_random_namesfix))
+View(matching_pc4)
+beta_pc4 <- RP_tenper_random_namesfix[matching_pc4, ]
+View(beta_pc4)
+beta_pc4_t <- t(beta_pc4)
+View(beta_pc4_t)
 
 pc5_rotation_table <- rotation_table %>%
   as.data.frame() %>%
@@ -51,6 +86,14 @@ pc5_rotation_table <- rotation_table %>%
   mutate(PC5 = abs(PC5)) %>%
   arrange(desc(PC5))
 view(pc5_rotation_table)
+top100_pc5_cpgs <- rownames(pc5_rotation_table)[1:100]
+head(top100_pc5_cpgs)
+matching_pc5 <- intersect(top100_pc5_cpgs, rownames(RP_tenper_random_namesfix))
+View(matching_pc5)
+beta_pc5 <- RP_tenper_random_namesfix[matching_pc5, ]
+View(beta_pc5)
+beta_pc5_t <- t(beta_pc5)
+View(beta_pc5_t)
 
 pc6_rotation_table <- rotation_table %>%
   as.data.frame() %>%
@@ -58,3 +101,11 @@ pc6_rotation_table <- rotation_table %>%
   mutate(PC6 = abs(PC6)) %>%
   arrange(desc(PC6))
 view(pc6_rotation_table)
+top100_pc6_cpgs <- rownames(pc6_rotation_table)[1:100]
+head(top100_pc6_cpgs)
+matching_pc6 <- intersect(top100_pc6_cpgs, rownames(RP_tenper_random_namesfix))
+View(matching_pc6)
+beta_pc6 <- RP_tenper_random_namesfix[matching_pc6, ]
+View(beta_pc6)
+beta_pc6_t <- t(beta_pc6)
+View(beta_pc6_t)
