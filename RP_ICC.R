@@ -34,6 +34,18 @@ beta_pc1 <- RP_tenper_random_namesfix[matching_pc1, ]
 View(beta_pc1)
 beta_pc1_t <- t(beta_pc1)
 View(beta_pc1_t)
+ids_pc1 <- rownames(beta_pc1_t)
+meta_pc <- data.frame(
+  Sample = ids_pc1,
+  Subject = sub("_V[12]", "", ids_pc1),
+  Visit = sub(".*_V", "V", ids_pc1))
+View(meta_pc)
+beta_df_pc1 <- cbind(meta_pc, beta_pc1_t)
+View(beta_df_pc1)
+
+
+
+
 
 pc2_rotation_table <- rotation_table %>%
   as.data.frame() %>%
@@ -49,6 +61,10 @@ beta_pc2 <- RP_tenper_random_namesfix[matching_pc2, ]
 View(beta_pc2)
 beta_pc2_t <- t(beta_pc2)
 View(beta_pc2_t)
+ids_pc2 <- rownames(beta_pc2_t)
+beta_df_pc2 <- cbind(meta_pc, beta_pc2_t)
+View(beta_df_pc2)
+
 
 pc3_rotation_table <- rotation_table %>%
   as.data.frame() %>%
@@ -64,6 +80,10 @@ beta_pc3 <- RP_tenper_random_namesfix[matching_pc3, ]
 View(beta_pc3)
 beta_pc3_t <- t(beta_pc3)
 View(beta_pc3_t)
+ids_pc3 <- rownames(beta_pc3_t)
+beta_df_pc3 <- cbind(meta_pc, beta_pc3_t)
+View(beta_df_pc3)
+
 
 pc4_rotation_table <- rotation_table %>%
   as.data.frame() %>%
@@ -79,6 +99,12 @@ beta_pc4 <- RP_tenper_random_namesfix[matching_pc4, ]
 View(beta_pc4)
 beta_pc4_t <- t(beta_pc4)
 View(beta_pc4_t)
+ids_pc4 <- rownames(beta_pc4_t)
+beta_df_pc4 <- cbind(meta_pc, beta_pc4_t)
+View(beta_df_pc4)
+
+
+
 
 pc5_rotation_table <- rotation_table %>%
   as.data.frame() %>%
@@ -94,6 +120,10 @@ beta_pc5 <- RP_tenper_random_namesfix[matching_pc5, ]
 View(beta_pc5)
 beta_pc5_t <- t(beta_pc5)
 View(beta_pc5_t)
+ids_pc5 <- rownames(beta_pc5_t)
+beta_df_pc5 <- cbind(meta_pc, beta_pc5_t)
+View(beta_df_pc5)
+
 
 pc6_rotation_table <- rotation_table %>%
   as.data.frame() %>%
@@ -109,3 +139,6 @@ beta_pc6 <- RP_tenper_random_namesfix[matching_pc6, ]
 View(beta_pc6)
 beta_pc6_t <- t(beta_pc6)
 View(beta_pc6_t)
+ids_pc6 <- rownames(beta_pc6_t)
+beta_df_pc6 <- cbind(meta_pc, beta_pc6_t)
+View(beta_df_pc6)
