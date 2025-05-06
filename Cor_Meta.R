@@ -73,6 +73,6 @@ meta_clean1 <- meta_clean1 %>%
   )
 view(meta_clean1)
 meta_clean1 <- meta_clean1[,-9]
-view(meta_clean1
-View(meta_clean1). 
+
+View(meta_clean1)
 #aaa
