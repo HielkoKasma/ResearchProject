@@ -43,6 +43,32 @@ View(meta_pc)
 beta_df_pc1 <- cbind(meta_pc, beta_pc1_t)
 View(beta_df_pc1)
 
+library(dplyr)
+library(tidyr)
+library(irr)
+
+df_ICC1 <- data.frame(cpg_id = top100_pc1_cpgs,
+                     ICC = NA,
+                     p_value = NA)
+for(cpg in top100_pc1_cpgs){
+  print(cpg)
+  current_df1 <- beta_df_pc1 %>%
+    dplyr::select(Subject, Visit, !!sym(cpg))%>%
+    pivot_wider(names_from = Visit, values_from = !!sym(cpg))%>% 
+    dplyr::select(-Subject)  # Remove the Subject column
+  icc_result1 <- irr::icc(current_df1, model = "twoway", type = "consistency", unit = "single")
+  icc_value1 <- icc_result1$value
+  p_val1 <- icc_result1$p.value
+  
+  df_ICC1[df_ICC1$cpg_id == cpg, "ICC"] <- icc_value1
+  df_ICC1[df_ICC1$cpg_id == cpg, "p_value"] <- p_val1
+}
+View(df_ICC1)
+
+
+
+
+
 
 
 
@@ -64,6 +90,33 @@ View(beta_pc2_t)
 ids_pc2 <- rownames(beta_pc2_t)
 beta_df_pc2 <- cbind(meta_pc, beta_pc2_t)
 View(beta_df_pc2)
+library(dplyr)
+library(tidyr)
+library(irr)
+
+df_ICC2 <- data.frame(cpg_id = top100_pc2_cpgs,
+                      ICC = NA,
+                      p_value = NA)
+for(cpg in top100_pc2_cpgs){
+  print(cpg)
+  current_df2 <- beta_df_pc2 %>%
+    dplyr::select(Subject, Visit, !!sym(cpg))%>%
+    pivot_wider(names_from = Visit, values_from = !!sym(cpg))%>% 
+    dplyr::select(-Subject)  # Remove the Subject column
+  icc_result2 <- irr::icc(current_df2, model = "twoway", type = "consistency", unit = "single")
+  icc_value2 <- icc_result2$value
+  p_val2 <- icc_result2$p.value
+  
+  df_ICC2[df_ICC2$cpg_id == cpg, "ICC"] <- icc_value2
+  df_ICC2[df_ICC2$cpg_id == cpg, "p_value"] <- p_val2
+}
+View(df_ICC2)
+
+
+
+
+
+
 
 
 pc3_rotation_table <- rotation_table %>%
@@ -83,6 +136,35 @@ View(beta_pc3_t)
 ids_pc3 <- rownames(beta_pc3_t)
 beta_df_pc3 <- cbind(meta_pc, beta_pc3_t)
 View(beta_df_pc3)
+library(dplyr)
+library(tidyr)
+library(irr)
+
+df_ICC3 <- data.frame(cpg_id = top100_pc3_cpgs,
+                      ICC = NA,
+                      p_value = NA)
+for(cpg in top100_pc3_cpgs){
+  print(cpg)
+  current_df3 <- beta_df_pc3 %>%
+    dplyr::select(Subject, Visit, !!sym(cpg))%>%
+    pivot_wider(names_from = Visit, values_from = !!sym(cpg))%>% 
+    dplyr::select(-Subject)  # Remove the Subject column
+  icc_result3 <- irr::icc(current_df3, model = "twoway", type = "consistency", unit = "single")
+  icc_value3 <- icc_result3$value
+  p_val3 <- icc_result3$p.value
+  
+  df_ICC3[df_ICC3$cpg_id == cpg, "ICC"] <- icc_value3
+  df_ICC3[df_ICC3$cpg_id == cpg, "p_value"] <- p_val3
+}
+View(df_ICC3)
+
+
+
+
+
+
+
+
 
 
 pc4_rotation_table <- rotation_table %>%
@@ -102,6 +184,38 @@ View(beta_pc4_t)
 ids_pc4 <- rownames(beta_pc4_t)
 beta_df_pc4 <- cbind(meta_pc, beta_pc4_t)
 View(beta_df_pc4)
+library(dplyr)
+library(tidyr)
+library(irr)
+
+df_ICC4 <- data.frame(cpg_id = top100_pc4_cpgs,
+                      ICC = NA,
+                      p_value = NA)
+for(cpg in top100_pc4_cpgs){
+  print(cpg)
+  current_df4 <- beta_df_pc4 %>%
+    dplyr::select(Subject, Visit, !!sym(cpg))%>%
+    pivot_wider(names_from = Visit, values_from = !!sym(cpg))%>% 
+    dplyr::select(-Subject)  # Remove the Subject column
+  icc_result4 <- irr::icc(current_df4, model = "twoway", type = "consistency", unit = "single")
+  icc_value4 <- icc_result4$value
+  p_val4 <- icc_result4$p.value
+  
+  df_ICC4[df_ICC4$cpg_id == cpg, "ICC"] <- icc_value4
+  df_ICC4[df_ICC4$cpg_id == cpg, "p_value"] <- p_val4
+}
+View(df_ICC4)
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -123,6 +237,35 @@ View(beta_pc5_t)
 ids_pc5 <- rownames(beta_pc5_t)
 beta_df_pc5 <- cbind(meta_pc, beta_pc5_t)
 View(beta_df_pc5)
+library(dplyr)
+library(tidyr)
+library(irr)
+
+df_ICC5 <- data.frame(cpg_id = top100_pc5_cpgs,
+                      ICC = NA,
+                      p_value = NA)
+for(cpg in top100_pc5_cpgs){
+  print(cpg)
+  current_df5 <- beta_df_pc5 %>%
+    dplyr::select(Subject, Visit, !!sym(cpg))%>%
+    pivot_wider(names_from = Visit, values_from = !!sym(cpg))%>% 
+    dplyr::select(-Subject)  # Remove the Subject column
+  icc_result5 <- irr::icc(current_df5, model = "twoway", type = "consistency", unit = "single")
+  icc_value5 <- icc_result5$value
+  p_val5 <- icc_result5$p.value
+  
+  df_ICC5[df_ICC5$cpg_id == cpg, "ICC"] <- icc_value5
+  df_ICC5[df_ICC5$cpg_id == cpg, "p_value"] <- p_val5
+}
+View(df_ICC5)
+
+
+
+
+
+
+
+
 
 
 pc6_rotation_table <- rotation_table %>%
@@ -142,3 +285,25 @@ View(beta_pc6_t)
 ids_pc6 <- rownames(beta_pc6_t)
 beta_df_pc6 <- cbind(meta_pc, beta_pc6_t)
 View(beta_df_pc6)
+library(dplyr)
+library(tidyr)
+library(irr)
+
+df_ICC6 <- data.frame(cpg_id = top100_pc6_cpgs,
+                      ICC = NA,
+                      p_value = NA)
+for(cpg in top100_pc6_cpgs){
+  print(cpg)
+  current_df6 <- beta_df_pc6 %>%
+    dplyr::select(Subject, Visit, !!sym(cpg))%>%
+    pivot_wider(names_from = Visit, values_from = !!sym(cpg))%>% 
+    dplyr::select(-Subject)  # Remove the Subject column
+  icc_result6 <- irr::icc(current_df6, model = "twoway", type = "consistency", unit = "single")
+  icc_value6 <- icc_result6$value
+  p_val6 <- icc_result6$p.value
+  
+  df_ICC6[df_ICC6$cpg_id == cpg, "ICC"] <- icc_value6
+  df_ICC6[df_ICC6$cpg_id == cpg, "p_value"] <- p_val6
+}
+View(df_ICC6)
+
