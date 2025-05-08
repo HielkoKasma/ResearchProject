@@ -6,12 +6,13 @@ view(meta_clean)
 library(dplyr)
 meta_clean <- meta_clean %>%
   mutate(
-    summer_autumn = ifelse(new_seasons == "summer_autumn", 1, 0),
-    winter_spring = ifelse(new_seasons == "winter_spring", 1, 0)
+    Season = ifelse(new_seasons == "summer_autumn", 1, 0),
   )
 view(meta_clean)
-meta_clean1 <- meta_clean[,-8]
+meta_clean1 <- meta_clean[,c(-8, -29,-30)]
+view(meta_clean[,c(29, 30)])
 view(meta_clean1)
+rm(meta_clean1)
 
 #making the table of PCA values per sample for PC1:PC6
 pca <- prcomp(t(RP_numeric), scale. = F)
@@ -48,15 +49,11 @@ view(df_PCAvalues)
 #Cleaning up metadataframe
 meta_clean1 <- meta_clean1 %>%
   mutate(
-    ex_smoker = ifelse(smoking.status == "Ex.smoker", 1, 0),
-    non_smoker = ifelse(smoking.status == "Non.smoker", 1, 0),
-    asthma = ifelse(asthma.status == "A", 1, 0),
-    healthy = ifelse(asthma.status == "H", 1, 0),
-    female = ifelse(gender == "female", 1, 0),
-    male = ifelse(gender == "male", 1, 0),
-    visit_1 = ifelse(meth_visit == "Visit 1a", 1, 0),
-    visit_2 = ifelse(meth_visit == "Visit 2", 1, 0)
-  )
+    Smoking_Status = ifelse(smoking.status == "Ex.smoker", 1, 0),
+    Asthma_status = ifelse(asthma.status == "A", 1, 0),
+    Sex = ifelse(gender == "female", 1, 0),
+    Visit = ifelse(meth_visit == "Visit 1a", 1, 0),
+    )
 view(meta_clean1)
 meta_clean1 <- meta_clean1[,-9]
 view(meta_clean1)
@@ -91,7 +88,7 @@ color=colorRampPalette(c('red4', 'white', 'blue4'))(256)
 desired_order <- c("PC1", "PC2", "PC3", "PC4", "PC5", "PC6")
 p_val_adj <- p_val_adj[desired_order, ]
 heatmap_p_val <- pheatmap::pheatmap(p_val_adj, main = "adjusted p-value",
-                                    cluster_rows = T, #What does this do?
+                                    cluster_rows = F,
                                     cluster_cols = T,
                                     color = color,
                                     #display_numbers = cor_coef,
@@ -102,7 +99,7 @@ view(df_PCAvalues)
 
 #heatmap for non-adjuested p value
 heatmap_p_val <- pheatmap::pheatmap(p_val_reg, main = "non-adjuested p-value",
-                                    cluster_rows = T,
+                                    cluster_rows = F,
                                     cluster_cols = T,
                                     color = color,
                                     #display_numbers = cor_coef,
