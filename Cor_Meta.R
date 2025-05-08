@@ -6,73 +6,104 @@ view(meta_clean)
 library(dplyr)
 meta_clean <- meta_clean %>%
   mutate(
-    summer_autumn = ifelse(new_seasons == "summer_autumn", 1, 0),
-    winter_spring = ifelse(new_seasons == "winter_spring", 1, 0)
+    Season = ifelse(new_seasons == "summer_autumn", 1, 0),
   )
 view(meta_clean)
-meta_clean1 <- meta_clean[,-8]
+meta_clean1 <- meta_clean[,c(-8, -29,-30)]
+view(meta_clean[,c(29, 30)])
 view(meta_clean1)
+rm(meta_clean1)
 
-#The code below is for making the dataframe of PC values per sample
-#change the values in teh pca_data code and df_PCAvalues code to get all values for PC1:PC6 and put them in their respective column in the dataframe
+#making the table of PCA values per sample for PC1:PC6
 pca <- prcomp(t(RP_numeric), scale. = F)
 pca_data <- data.frame(Sample=rownames(pca$x),
                        X=pca$x[,1], 
                        Y=pca$x[,2]) %>%
   mutate(group_id = str_remove(Sample, "_.*"))  %>%
   left_join(metatable, by = c("Sample" = "pca_ids"))
-view(pca_data)
 
 df_PCAvalues <- data.frame(pca_data$X) 
 df_PCAvalues$PC2 <- pca_data$Y
-df_PCAvalues
-colnames(df_PCAvalues) <- c("PC1", "PC2")
-df_PCAvalues
-rownames(df_PCAvalues) <- pca_data$Sample
-df_PCAvalues
 
+pca <- prcomp(t(RP_numeric), scale. = F)
+pca_data <- data.frame(Sample=rownames(pca$x),
+                       X=pca$x[,3], 
+                       Y=pca$x[,4]) %>%
+  mutate(group_id = str_remove(Sample, "_.*"))  %>%
+  left_join(metatable, by = c("Sample" = "pca_ids"))
+df_PCAvalues$PC3 <- pca_data$X
+df_PCAvalues$PC4 <- pca_data$Y
+
+pca <- prcomp(t(RP_numeric), scale. = F)
+pca_data <- data.frame(Sample=rownames(pca$x),
+                       X=pca$x[,5], 
+                       Y=pca$x[,6]) %>%
+  mutate(group_id = str_remove(Sample, "_.*"))  %>%
+  left_join(metatable, by = c("Sample" = "pca_ids"))
+df_PCAvalues$PC5 <- pca_data$X
 df_PCAvalues$PC6 <- pca_data$Y
+rownames(df_PCAvalues) <- pca_data$Sample
+colnames(df_PCAvalues)[1] <- "PC1"
 view(df_PCAvalues)
 
-#Code Tatiana
+#Cleaning up metadataframe
+meta_clean1 <- meta_clean1 %>%
+  mutate(
+    Smoking_Status = ifelse(smoking.status == "Ex.smoker", 1, 0),
+    Asthma_status = ifelse(asthma.status == "A", 1, 0),
+    Sex = ifelse(gender == "female", 1, 0),
+    Visit = ifelse(meth_visit == "Visit 1a", 1, 0),
+    )
+view(meta_clean1)
+meta_clean1 <- meta_clean1[,-9]
+view(meta_clean1)
+
+meta_clean1_nohos <- meta_clean1[, -c(11:21)]
+view(meta_clean1_nohos)
+
+#Code Tatiana - Plotting heatmap
 
 cor.MOFA <- psych::corr.test(df_PCAvalues,
-                               
-                             meta_clean1 %>%
+                             
+                             meta_clean1_nohos %>%
                                tibble::column_to_rownames('meth_file_id') %>%
-                             dplyr::select(where(is.numeric)),
+                               dplyr::select(where(is.numeric)),
                              method = "spearman",
                              adjust = "BH",
                              minlength = 2)
 
 p_val_adj <- cor.MOFA$p.adj
+p_val_reg <- cor.MOFA$p
 view(p_val_adj)
 cor_coef <- cor.MOFA$r
 view(cor_coef)
 
 #plot p val
-install.packages("pheatmap")
+#install.packages("pheatmap")
 library(pheatmap)
 symmertic_breaks <- seq(from=0, to = 0.06, length.out = 256)
 color=colorRampPalette(c('red4', 'white', 'blue4'))(256)
+
+#heatmap for adjusted p value
+desired_order <- c("PC1", "PC2", "PC3", "PC4", "PC5", "PC6")
+p_val_adj <- p_val_adj[desired_order, ]
 heatmap_p_val <- pheatmap::pheatmap(p_val_adj, main = "adjusted p-value",
-                                    cluster_rows = T,
+                                    cluster_rows = F,
                                     cluster_cols = T,
                                     color = color,
                                     #display_numbers = cor_coef,
                                     breaks = symmertic_breaks,
                                     fontsize_col = 6)
-meta_clean1 <- meta_clean1 %>%
-  mutate(
-    ex_smoker = ifelse(smoking.status == "Ex.smoker", 1, 0),
-    non_smoker = ifelse(smoking.status == "Non.smoker", 1, 0),
-    asthma = ifelse(asthma.status == "A", 1, 0),
-    healthy = ifelse(asthma.status == "H", 1, 0),
-    female = ifelse(gender == "female", 1, 0),
-    male = ifelse(gender == "male", 1, 0)
-  )
-view(meta_clean1)
-meta_clean1 <- meta_clean1[,-9]
 
-View(meta_clean1)
-#aaa
+view(df_PCAvalues)
+
+#heatmap for non-adjuested p value
+heatmap_p_val <- pheatmap::pheatmap(p_val_reg, main = "non-adjuested p-value",
+                                    cluster_rows = F,
+                                    cluster_cols = T,
+                                    color = color,
+                                    #display_numbers = cor_coef,
+                                    breaks = symmertic_breaks,
+                                    fontsize_col = 6)
+
+
