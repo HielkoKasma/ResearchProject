@@ -64,7 +64,7 @@ for(cpg in top100_pc1_cpgs){
   df_ICC1[df_ICC1$cpg_id == cpg, "p_value"] <- p_val1
 }
 View(df_ICC1)
-
+mean(df_ICC1$ICC) #0.1855919
 
 
 
@@ -111,7 +111,7 @@ for(cpg in top100_pc2_cpgs){
   df_ICC2[df_ICC2$cpg_id == cpg, "p_value"] <- p_val2
 }
 View(df_ICC2)
-
+mean(df_ICC2$ICC) #0.9861335
 
 
 
@@ -157,7 +157,7 @@ for(cpg in top100_pc3_cpgs){
   df_ICC3[df_ICC3$cpg_id == cpg, "p_value"] <- p_val3
 }
 View(df_ICC3)
-
+mean(df_ICC3$ICC) #0.4094824
 
 
 
@@ -205,7 +205,7 @@ for(cpg in top100_pc4_cpgs){
   df_ICC4[df_ICC4$cpg_id == cpg, "p_value"] <- p_val4
 }
 View(df_ICC4)
-
+mean(df_ICC4$ICC) #0.4051611
 
 
 
@@ -258,7 +258,7 @@ for(cpg in top100_pc5_cpgs){
   df_ICC5[df_ICC5$cpg_id == cpg, "p_value"] <- p_val5
 }
 View(df_ICC5)
-
+mean(df_ICC5$ICC) #0.565348
 
 
 
@@ -306,4 +306,7 @@ for(cpg in top100_pc6_cpgs){
   df_ICC6[df_ICC6$cpg_id == cpg, "p_value"] <- p_val6
 }
 View(df_ICC6)
+mean(df_ICC6$ICC) #0.5740619
 
+ICC100_means<- c(0.1855919,0.9861335,0.4094824,0.4051611,0.565348,0.5740619)
+PC_ratios<- c()

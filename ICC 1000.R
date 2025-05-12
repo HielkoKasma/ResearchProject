@@ -27,20 +27,20 @@ pc1_rotation_table <- rotation_table %>%
 any(pc1_rotation_table$PC1 < 0)
 view(pc1_rotation_table)
 top1000_pc1_cpgs <- rownames(pc1_rotation_table)[1:1000]
-head(top100_pc1_cpgs)
+head(top1000_pc1_cpgs)
 matching_pc1000 <- intersect(top1000_pc1_cpgs, rownames(RP_tenper_random_namesfix))
 View(matching_pc1000)
 beta_pc1000 <- RP_tenper_random_namesfix[matching_pc1000, ]
 View(beta_pc1000)
-beta_pc1000_t <- t(beta_pc1)
+beta_pc1000_t <- t(beta_pc1000)
 View(beta_pc1000_t)
 ids_pc1000 <- rownames(beta_pc1000_t)
-meta_pc1000 <- data.frame(
+meta_pc <- data.frame(
   Sample = ids_pc1000,
   Subject = sub("_V[12]", "", ids_pc1000),
   Visit = sub(".*_V", "V", ids_pc1000))
-View(meta_pc1000)
-beta_df_pc1000 <- cbind(meta_pc1000, beta_pc1000_t)
+View(meta_pc)
+beta_df_pc1000 <- cbind(meta_pc, beta_pc1000_t)
 View(beta_df_pc1000)
 
 library(dplyr)
@@ -64,7 +64,7 @@ for(cpg in top1000_pc1_cpgs){
   df_ICC1000[df_ICC1000$cpg_id == cpg, "p_value"] <- p_val1000
 }
 View(df_ICC1000)
-
+mean(df_ICC1000$ICC) #0.1918788
 
 
 
@@ -111,7 +111,7 @@ for(cpg in top1000_pc2_cpgs){
   df_ICC2000[df_ICC2000$cpg_id == cpg, "p_value"] <- p_val2000
 }
 View(df_ICC2000)
-
+mean(df_ICC2000$ICC) #0.8587877
 
 
 
@@ -157,7 +157,7 @@ for(cpg in top1000_pc3_cpgs){
   df_ICC3000[df_ICC3000$cpg_id == cpg, "p_value"] <- p_val3000
 }
 View(df_ICC3000)
-
+mean(df_ICC3000$ICC) #0.391255
 
 
 
@@ -205,7 +205,7 @@ for(cpg in top1000_pc4_cpgs){
   df_ICC4000[df_ICC4000$cpg_id == cpg, "p_value"] <- p_val4000
 }
 View(df_ICC4000)
-
+mean(df_ICC4000$ICC) #0.2320076
 
 
 
@@ -258,7 +258,7 @@ for(cpg in top1000_pc5_cpgs){
   df_ICC5000[df_ICC5000$cpg_id == cpg, "p_value"] <- p_val5000
 }
 View(df_ICC5000)
-
+mean(df_ICC5000$ICC) #0.4235237
 
 
 
@@ -306,3 +306,9 @@ for(cpg in top1000_pc6_cpgs){
   df_ICC6000[df_ICC6000$cpg_id == cpg, "p_value"] <- p_val6000
 }
 View(df_ICC6000)
+mean(df_ICC6000$ICC) #0.3792592
+
+
+ICC_1000_means<- c(0.1918788,0.8587877,0.391255,0.2320076,0.4235237,0.3792592)
+PC_ratios<- c()
+
