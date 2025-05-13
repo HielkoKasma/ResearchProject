@@ -7,7 +7,7 @@ library(psych)
 #set names of original dataset as rownames
 RP_tenper_random_namesfix <- RP_tenper_random_namesfix %>%
   column_to_rownames("X")
-view(RP_tenper_random_namesfix)
+#view(RP_tenper_random_namesfix)
 
 #find out if the cpg sites in RP_tenper... are in the same order as the PCA
 #This code proves that, since RP_numeric was used for the PCA
@@ -16,7 +16,7 @@ identical(RP_tenper_random_namesfix$S1_V2, RP_numeric$S1_V2)
 rotation_table <- pca$rotation
 nrow(rotation_table) #rotation_table = PC values for each cpg site per PC
 rownames(rotation_table) <- rownames(RP_tenper_random_namesfix)
-view(rotation_table) #now, the CpG site corresponding to each PCA value is displayed in rotation_table
+#view(rotation_table) #now, the CpG site corresponding to each PCA value is displayed in rotation_table
 
 #making a dataframe for PC values per CpG site in descending order for PC1
 pc1_rotation_table <- rotation_table %>%
@@ -25,23 +25,23 @@ pc1_rotation_table <- rotation_table %>%
   mutate(PC1 = abs(PC1)) %>%
   arrange(desc(PC1))
 any(pc1_rotation_table$PC1 < 0)
-view(pc1_rotation_table)
+#view(pc1_rotation_table)
 top100_pc1_cpgs <- rownames(pc1_rotation_table)[1:100]
 head(top100_pc1_cpgs)
 matching_pc1 <- intersect(top100_pc1_cpgs, rownames(RP_tenper_random_namesfix))
-View(matching_pc1)
+#View(matching_pc1)
 beta_pc1 <- RP_tenper_random_namesfix[matching_pc1, ]
-View(beta_pc1)
+#View(beta_pc1)
 beta_pc1_t <- t(beta_pc1)
-View(beta_pc1_t)
+#View(beta_pc1_t)
 ids_pc1 <- rownames(beta_pc1_t)
 meta_pc <- data.frame(
   Sample = ids_pc1,
   Subject = sub("_V[12]", "", ids_pc1),
   Visit = sub(".*_V", "V", ids_pc1))
-View(meta_pc)
+#View(meta_pc)
 beta_df_pc1 <- cbind(meta_pc, beta_pc1_t)
-View(beta_df_pc1)
+#View(beta_df_pc1)
 
 library(dplyr)
 library(tidyr)
@@ -307,3 +307,42 @@ for(cpg in top100_pc6_cpgs){
 }
 View(df_ICC6)
 
+
+#Plotting ICC vs PC
+mean_ICC1 <- mean(df_ICC1$ICC)
+mean_ICC2 <- mean(df_ICC2$ICC)
+mean_ICC3 <- mean(df_ICC3$ICC)
+mean_ICC4 <- mean(df_ICC4$ICC)
+mean_ICC5 <- mean(df_ICC5$ICC)
+mean_ICC6 <- mean(df_ICC6$ICC)
+
+ICC_means <- c(mean_ICC1,
+  mean_ICC2,
+  mean_ICC3,
+  mean_ICC4,
+  mean_ICC5,
+  mean_ICC6)
+ICC_means
+ICC_means_df <- data.frame(t(ICC_means))
+colnames(ICC_means_df) <- c("ICC1", "ICC2", "ICC3", "ICC4", "ICC5", "ICC6")
+rownames(ICC_means_df) <- c("Mean_value")
+ICC_means_df
+
+PC_stability_dfform <- data.frame(results_df[6, ])
+
+PC_stability_values <- t(PC_stability_dfform)
+colnames(PC_stability_values) <- c("Stability")
+ICC_mean_values <- t(ICC_means_df)
+
+PC_vs_ICC <- data.frame(PC_stability_values, ICC_mean_values)
+
+labels_PCAvsICC <- c("PC1", "PC2", "PC3", "PC4", "PC5", "PC6")
+
+library(ggplot2)
+ggplot(PC_vs_ICC, aes(x = Stability, y = Mean_value)) +
+  geom_point() +
+  geom_text(aes(label = labels_PCAvsICC), vjust = -0.5,
+            size = 3.5) +
+  theme_bw() +
+  labs(x = "PC Stability Ratio", y = "ICC Mean Value", 
+       title = "Stability PCA vs ICC")
