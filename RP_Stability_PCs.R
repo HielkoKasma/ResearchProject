@@ -67,7 +67,7 @@ results_df["SD_Self_Distance", "Value"] <- sd_self_distances
 results_df["Mean_NonSelf_Distance", "Value"] <- mean_non_self_distances
 results_df["SD_NonSelf_Distance", "Value"] <- sd(non_self_distances_no_zeros)
 results_df["Stability", "Value"] <- mean_self_distances - mean_non_self_distances
-results_df
+view(results_df)
 
 #this code adds new columns to the results dataframe, ONLY RUN FROM PC2 AND ONWARDS!!!
 
@@ -92,6 +92,18 @@ results_df
 view(results_df)
 
 view(restls_df)
+
+results_df[c(1,3),] 
+ratio_row <- results_df[1,]/results_df[3,]
+
+new_row <- results_df[1, ] / results_df[3, ]
+# Insert the new row as the 6th row
+results_df <- rbind(results_df[1:5, ], new_row, results_df[6:nrow(results_df), ])
+# Rename the row if needed (optional)
+rownames(results_df)[6] <- "Ratio Self:Non-Self"
+
+view(results_df)
+results_df <- results_df[-c(7,8),]
 
 #calculating ICC: 
 
@@ -238,3 +250,6 @@ ggplot(long_df, aes(x = V1, y = V2)) +
 library(irr)
 icc_result_rand_irr<-icc(long_df, model = "twoway", type = "consistency", unit = "single")
 print(icc_result_rand_irr)
+
+library(tidyverse)
+view(results_df)
