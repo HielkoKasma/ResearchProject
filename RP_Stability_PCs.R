@@ -250,3 +250,6 @@ ggplot(long_df, aes(x = V1, y = V2)) +
 library(irr)
 icc_result_rand_irr<-icc(long_df, model = "twoway", type = "consistency", unit = "single")
 print(icc_result_rand_irr)
+
+library(tidyverse)
+view(results_df)

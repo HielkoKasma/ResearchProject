@@ -307,6 +307,7 @@ for(cpg in top100_pc6_cpgs){
 }
 View(df_ICC6)
 
+results_df
 
 #Plotting ICC vs PC
 mean_ICC1 <- mean(df_ICC1$ICC)
@@ -324,11 +325,12 @@ ICC_means <- c(mean_ICC1,
   mean_ICC6)
 ICC_means
 ICC_means_df <- data.frame(t(ICC_means))
+ICC_means_df <- data.frame(t(ICC_1000_means))
 colnames(ICC_means_df) <- c("ICC1", "ICC2", "ICC3", "ICC4", "ICC5", "ICC6")
 rownames(ICC_means_df) <- c("Mean_value")
 ICC_means_df
 
-PC_stability_dfform <- data.frame(results_df[6, ])
+PC_stability_dfform <- data.frame(results_df[5, ])
 
 PC_stability_values <- t(PC_stability_dfform)
 colnames(PC_stability_values) <- c("Stability")
@@ -338,11 +340,30 @@ PC_vs_ICC <- data.frame(PC_stability_values, ICC_mean_values)
 
 labels_PCAvsICC <- c("PC1", "PC2", "PC3", "PC4", "PC5", "PC6")
 
+library(ggrepel)
 library(ggplot2)
 ggplot(PC_vs_ICC, aes(x = Stability, y = Mean_value)) +
   geom_point() +
-  geom_text(aes(label = labels_PCAvsICC), vjust = -0.5,
-            size = 3.5) +
+  geom_text_repel(aes(label = labels_PCAvsICC), 
+                  size = 3.5, 
+                  max.overlaps = Inf) +
   theme_bw() +
   labs(x = "PC Stability Ratio", y = "ICC Mean Value", 
        title = "Stability PCA vs ICC")
+
+#flipping the ratio's, so that ratio of stability is non-self/self
+#this results in higher stability = higher ratio, instead of higer stability = lower ratio
+stability_ratio_correct <- results_df[3,]/results_df[1,]
+
+#adding new ratios to last row of results_df and removing redundant/incorrect rows
+results_df <- rbind(results_df, stability_ratio_correct)
+rownames(results_df)[7] <- "Stability ratio (non-self/self)"
+results_df <- results_df[-c(5, 6), ]
+view(results_df)
+
+
+ICC100_means<- c(0.1855919,0.9861335,0.4094824,0.4051611,0.565348,0.5740619)
+
+ICC_1000_means<- c(0.1918788,0.8587877,0.391255,0.2320076,0.4235237,0.3792592)
+
+

@@ -1,0 +1,3 @@
+cpg_annotation <- annotation_cpgs_10perc_random
+cpg_ann_rel_gene <- cpg_annotation_reletave_to_gene
+coding_gene_ann <- coding_gene_annotation_grch38_101
