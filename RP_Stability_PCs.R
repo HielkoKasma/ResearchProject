@@ -253,3 +253,11 @@ print(icc_result_rand_irr)
 
 library(tidyverse)
 view(results_df)
+
+
+
+
+#saving rownames in list for Tatiana
+rownames_list <- rownames(RP_tenper_random_namesfix)
+save(rownames_list, file = "rownames_list.RData")
+getwd()
