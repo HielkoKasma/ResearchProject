@@ -261,3 +261,9 @@ view(results_df)
 rownames_list <- rownames(RP_tenper_random_namesfix)
 save(rownames_list, file = "rownames_list.RData")
 getwd()
+read.csv(C:\Users\hielk\Downloads\chisq_pval_matrix)
+
+load("chisq_pval_matrix.RData")
+rm(chisq_pval_matrix)
+getwd()
+

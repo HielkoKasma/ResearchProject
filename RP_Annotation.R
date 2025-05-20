@@ -56,7 +56,7 @@ in_table_pc1 <- matrix(c(
   in_gene_pc1,
   1000 - in_gene_pc1,
   total_in_gene_pc1,
-  total_cpgs - total_in_gene_pc1
+  total_cpgs1 - total_in_gene_pc1
 ), nrow = 2, byrow = TRUE)
 colnames(in_table_pc1) <- c("In_gene", "Not_in_gene")
 rownames(in_table_pc1) <- c("PC1", "Overall")
@@ -68,7 +68,7 @@ up_table_pc1 <- matrix(c(
   up_gene_pc1,
   1000 - up_gene_pc1,
   total_up_gene_pc1,
-  total_cpgs - total_up_gene_pc1
+  total_cpgs1 - total_up_gene_pc1
 ), nrow = 2, byrow = TRUE)
 colnames(up_table_pc1) <- c("Upstream", "Not_upstream")
 rownames(up_table_pc1) <- c("PC1", "Overall")
@@ -80,7 +80,7 @@ down_table_pc1 <- matrix(c(
   down_gene_pc1,
   1000 - down_gene_pc1,
   total_down_gene_pc1,
-  total_cpgs - total_down_gene_pc1
+  total_cpgs1 - total_down_gene_pc1
 ), nrow = 2, byrow = TRUE)
 colnames(down_table_pc1) <- c("Downstream", "Not_downstream")
 rownames(down_table_pc1) <- c("PC1", "Overall")
@@ -92,7 +92,7 @@ intergene_table_pc1 <- matrix(c(
   inter_gene_pc1,
   1000 - inter_gene_pc1,
   total_inter_gene_pc1,
-  total_cpgs - total_inter_gene_pc1
+  total_cpgs1 - total_inter_gene_pc1
 ), nrow = 2, byrow = TRUE)
 colnames(intergene_table_pc1) <- c("Intergenic", "Not_intergenic")
 rownames(intergene_table_pc1) <- c("PC1", "Overall")
@@ -554,7 +554,7 @@ nrow = 4, ncol = 6, byrow = FALSE)
 rownames(chisq_pval_matrix) <- c("In_gene", "Upstream", "Downstream", "Intergenic")
 colnames(chisq_pval_matrix) <- c("PC1", "PC2", "PC3", "PC4", "PC5", "PC6")
 
-# View the matrix
+# View the matrix 
 View(chisq_pval_matrix)
 
 
