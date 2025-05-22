@@ -1,5 +1,6 @@
 #Had problems with the chisq matrix, so we worked around it
 load("C:/Users/hielk/Downloads/chisq_pval_matrix.RData")
+library(tidyverse)
 view(chisq_pval_matrix)
 
 chisq_pval_matrix
@@ -38,3 +39,8 @@ heatmap_p_val <- pheatmap::pheatmap(log_chisq_adjpval_matrix, main = "-log10 P-v
                                     breaks = symmertic_breaks,
                                     fontsize_col = 10,
                                     fontsize_row = 10 )
+
+
+#After feedback from Tatiana and Victor - to make heatmap show over-/underrepresentation
+sign_matrix <- matrix(NA, nrow = 4, ncol = 6)
+sign_matrix
